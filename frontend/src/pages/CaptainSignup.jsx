@@ -1,0 +1,119 @@
+import React, { useState } from "react";
+import driversLogo from "../assets/drivers-logo.png";
+import { Link } from "react-router-dom";
+
+const CaptainSignup = () => {
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [userData, setUserData] = useState({});
+
+  const submitHandler = (e) => {
+    e.preventDefault();
+
+    setUserData({
+      fullName: {
+        firstName: firstName,
+        lastName: lastName,
+      },
+      email: email,
+      password: password,
+    });
+
+    console.log(userData);
+
+    setFirstName("");
+    setLastName("");
+    setEmail("");
+    setPassword("");
+  };
+
+  return (
+    <div className="px-5 py-4 flex flex-col h-screen justify-between">
+      <div>
+        <img className="w-16 mb-3" src={driversLogo} alt="Logo" />
+
+        <form
+          onSubmit={(e) => {
+            submitHandler(e);
+          }}
+        >
+          <h3 className="text-lg mb-2 font-medium">What's your name</h3>
+
+          <div className="flex gap-2 mb-5">
+            <input
+              required
+              value={firstName}
+              onChange={(e) => {
+                setFirstName(e.target.value);
+              }}
+              className="bg-[#eeeeee] rounded px-4 py-2 w-1/2 text-lg placeholder:text-base"
+              type="text"
+              name="firstName"
+              placeholder="Your first name"
+            />
+            <input
+              required
+              value={lastName}
+              onChange={(e) => {
+                setLastName(e.target.value);
+              }}
+              className="bg-[#eeeeee] rounded px-4 py-2 w-1/2 text-lg placeholder:text-base"
+              type="text"
+              name="lastName"
+              placeholder="Your last name"
+            />
+          </div>
+
+          <h3 className="text-lg mb-2 font-medium">What's your email</h3>
+
+          <input
+            required
+            value={email}
+            onChange={(e) => {
+              setEmail(e.target.value);
+            }}
+            className="bg-[#eeeeee] mb-6 rounded px-4 py-2 w-full text-lg placeholder:text-base"
+            type="email"
+            name="email"
+            placeholder="Your email address"
+          />
+
+          <h3 className="text-lg mb-2 font-medium">Enter password</h3>
+
+          <input
+            required
+            value={password}
+            onChange={(e) => {
+              setPassword(e.target.value);
+            }}
+            className="bg-[#eeeeee] mb-6 rounded px-4 py-2 w-full text-lg placeholder:text-base"
+            type="password"
+            name="password"
+            placeholder="Your password"
+          />
+
+          <button className="bg-[#111] text-white mb-3 rounded px-4 py-2 w-full text-lg placeholder:text-base">
+            Sign in
+          </button>
+        </form>
+        <p className="text-center">
+          Already joined the fleet?{" "}
+          <Link to="/captain-login" className="text-blue-600">
+            Login here
+          </Link>
+        </p>
+      </div>
+      <div>
+        <p className="text-[10px] leading-tight">
+          This site has been protected by reCAPTCHA and the{" "}
+          <span className="underline">Google Privacy Policy</span> and{" "}
+          <span className="underline">Terms of Service apply</span>.
+        </p>
+      </div>
+    </div>
+  );
+};
+
+export default CaptainSignup;
