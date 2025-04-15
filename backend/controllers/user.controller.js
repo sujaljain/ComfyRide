@@ -14,7 +14,7 @@ module.exports.registerUser = async (req, res, next) => {
 
     const isUserExists = await userModel.findOne({ email });
 
-    if (isUserExists){
+    if (isUserExists) {
         return res.status(400).json({ message: 'User Already Exists' });
     }
 
@@ -64,10 +64,19 @@ module.exports.getUserProfile = async (req, res, next) => {
 }
 
 module.exports.logoutUser = async (req, res, next) => {
-    res.clearCookie('token');
-    const token = req.cookies.token || req.headers.authorization?.split(' ')[1];
+    try {
+        const token = req.cookies.token || req.headers.authorization?.split(' ')[1];
 
-    await blacklistTokenModel.create({ token });
+        if (!token) {
+            return res.status(400).json({ message: 'No token provided' });
+        }
 
-    res.status(200).json({ message: 'Logged out successfully' });
-}
+        await blacklistTokenModel.create({ token });
+        res.clearCookie('token');
+        res.status(200).json({ message: 'Logged out USER successfully' });
+
+    } catch (error) {
+        console.error('Error during user logout:', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+};

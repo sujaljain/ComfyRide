@@ -17,6 +17,9 @@ const UserLogout = () => {
         localStorage.removeItem("token");
         navigate("/login");
       }
+    })
+    .catch((error) => {
+      console.error('Error during user logout:', error);
     });
 
   return <div>UserLogout</div>;

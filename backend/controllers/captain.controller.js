@@ -81,10 +81,19 @@ module.exports.getCaptainProfile = async (req, res, next) => {
 }
 
 module.exports.logoutCaptain = async (req, res, next) => {
-    const token = req.cookies.token || req.headers.authorization?.split(' ')[1];
+    try {
+        const token = req.cookies.token || req.headers.authorization?.split(' ')[1];
 
-    await blacklistTokenModel.create({ token });
+        if (!token) {
+            return res.status(400).json({ message: 'No token provided' });
+        }
 
-    res.clearCookie('token');
-    res.status(200).json({ message: 'Logout Successfully' });
-}
+        await blacklistTokenModel.create({ token });
+        res.clearCookie('token');
+        res.status(200).json({ message: 'Logged out CAPTAIN successfully' });
+
+    } catch (error) {
+        console.error('Error during captain logout:', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+};
